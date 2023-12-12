@@ -23,11 +23,9 @@ class DataCleaning:
         return df
     
   
-        
-        
 
 
-    def clean_user_data(self, df):
+    def clean_user_data(self):
         df = self.get_from_aws('legacy_users')
         user_id_duplicates = df[df['user_uuid'].duplicated(keep='first')==True]
         df = df.drop(user_id_duplicates.index)
@@ -62,8 +60,6 @@ class DataCleaning:
     def clean_store_data(self):
 
         df = self.get_api_data()
-        #print("RECEIVED DF")
-        #print(df)
         df = df[df['index'] != 447]
         df['latitude'].fillna(0, inplace=True)
         df['longitude'].fillna(0, inplace=True)
@@ -74,9 +70,6 @@ class DataCleaning:
         df['staff_numbers'] = pd.to_numeric(df['staff_numbers'], errors='coerce')
         df['staff_numbers'].fillna(0, inplace=True)
         df['staff_numbers'] = df['staff_numbers'].astype('int')
-
-        #print("FINAL DF")
-        #print(df)
         return df
 
 
@@ -101,9 +94,9 @@ class DataCleaning:
 #data_clean = DataCleaning()          #Card detail clean test
 # df = data_clean.clean_card_data()
 
-#data_clean = DataCleaning()    #Store data clean test
-#data_clean.clean_store_data()
+data_clean = DataCleaning()    #Store data clean test
+data_clean.clean_store_data()
 
 
-data_clean = DataCleaning()
-data_clean.clean_orders_data()
+#data_clean = DataCleaning()
+#data_clean.clean_orders_data()

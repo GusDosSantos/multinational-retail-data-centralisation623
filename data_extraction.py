@@ -6,6 +6,7 @@ import requests
 import boto3
 import fsspec
 import yaml
+from io import StringIO
 from database_utils import DatabaseConnector
 
 class DataExtractor:
@@ -51,7 +52,6 @@ class DataExtractor:
         client = boto3.client('s3',aws_access_key_id= self.aws_keys['Access key ID'], aws_secret_access_key=self.aws_keys['Secret access key'])
         csv_object = client.get_object(Bucket = 'data-handling-public', Key = 'products.csv' )['Body']
         csv_object = csv_object.read().decode('utf-8')
-        from io import StringIO
         df_product_details = pd.read_csv(StringIO(csv_object))
         return df_product_details
     

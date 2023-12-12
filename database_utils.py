@@ -40,7 +40,7 @@ class DatabaseConnector:
             return None
         
 
-    def upload_to_db(self, db_clean):
+    def upload_to_db(self, db_clean, table_name):
             local_creds = self.local_credentials()
             self.local_type ='postgresql'
             self.local_api ='psycopg2'
@@ -50,10 +50,11 @@ class DatabaseConnector:
             self.local_database = 'sales_data'
             self.local_port = '5432'
             self.tosql = create_engine(f"{self.local_type}+{self.local_api}://{self.local_user}:{self.local_password}@{self.local_host}:{self.local_port}/{self.local_database}")
-            db_clean.to_sql('order_table',self.tosql, if_exists = 'replace')
+            db_clean.to_sql(table_name,self.tosql, if_exists = 'replace')
 
     def list_db_tables(self):
         print(self.inspector.get_table_names())
+
 
 
 #data_connector = DatabaseConnector()   #List Tables 

@@ -42,7 +42,7 @@ This script is what instantiates all the other classes and allows for the extrac
 
 ## Usage
 
-- A basic understanding of Python would be necessary to run make use this program.
+- A basic understanding of Python would be necessary to run and use this program.
 - Install each of the files and folders within this repo and download locally into a folder of your choice.
 - Use pip/conda to install any of the libraries & modules specified within the script imports as these are necessary for the program to function.
 - Create the following yaml files:

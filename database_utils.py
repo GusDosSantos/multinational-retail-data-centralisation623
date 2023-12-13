@@ -47,7 +47,7 @@ class DatabaseConnector:
             self.local_host = 'localhost'
             self.local_password = local_creds['LOCAL_PASSWORD']
             self.local_user = 'postgres'
-            self.local_database = 'sales_data'
+            self.local_database = local_creds['DATABASE_NAME']
             self.local_port = '5432'
             self.tosql = create_engine(f"{self.local_type}+{self.local_api}://{self.local_user}:{self.local_password}@{self.local_host}:{self.local_port}/{self.local_database}")
             db_clean.to_sql(table_name,self.tosql, if_exists = 'replace')

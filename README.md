@@ -7,7 +7,7 @@ This project aimed to develop a program that can collect data from multiple sour
 - This process also would improve one’s technical knowledge of Python, including a wide range of libraries, SQL and use of several tools such as Git Bash, GitHub, PgAdmin and AWS.
 
 ## Data Sources
-- This client has data spread across multiple sources and in different formats. These include:
+This client has data spread across multiple sources and in different formats. These include:
 - Order data from an AWS RDS Database.
 - User data from an AWS RDS Database.
 - Credit Card data from a PDF stored in an AWS S3 Bucket.
@@ -38,3 +38,19 @@ This class is responsible for providing a connection to the local client databas
 
 ### Main.py
 This script is what instantiates all the other classes and allows for the extracting, cleaning and uploading of the data. There is a try block for each of the data sources, where it will attempt to extract, clean and upload that piece of table. 
+
+
+## Usage
+
+- A basic understanding of Python would be necessary to run make use this program.
+- Install each of the files and folders within this repo and download locally into a folder of your choice.
+- Use pip/conda to install any of the libraries & modules specified within the script imports as these are necessary for the program to function.
+- Create the following yaml files:
+    1. **db_creds.yaml (RDS_HOST, RDS_PASSWORD, RDS_USER, RDS_DATABASE, RDS_PORT)** - This file stores the necessary values for connection to the aws relational database.
+    2. **local_creds.yaml (LOCAL_PASSWORD, DATABASE_NAME)** - This file stores the root password and the database name to connect/upload to on your local postgres server.
+    3. **s3_keys.yaml (ACCESS, SECRET)** - This file stores the access and secret key for the IAM user to allow for a connection to the AWS S3 Bucket. Make sure that AWS is configured in the command line when attempting to extract data from the bucket. It is also important to note that the user must have S3 permissions on the account.
+- With these yaml files filled appropriately, the program can now be ran in order to extract, clean and upload the data from the various sources into your local postgres database.
+- The scripts can be modified to extract data from other types of sources, although this would require changes to the cleaning according to both the values within the source data as well as the end specification.
+
+
+

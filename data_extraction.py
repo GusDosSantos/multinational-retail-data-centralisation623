@@ -16,7 +16,6 @@ class DataExtractor:
         self.store_count = self.list_number_of_stores('https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores')
         with open('s3_keys.yaml', 'r') as yaml_file:
             self.s3_keys = yaml.safe_load(yaml_file)
-        
 
     
     def read_rds_table(self, databaseconnector, table_name):
@@ -80,5 +79,5 @@ class DataExtractor:
 #extractor.retrieve_stores_data()
 
 
-extractor = DataExtractor()    #PDF extraction Test
-extractor.extract_json_data()
+#extractor = DataExtractor()    #JSON extraction Test
+#extractor.extract_json_data()

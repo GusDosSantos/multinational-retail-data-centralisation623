@@ -133,8 +133,6 @@ class DataCleaning:
 
 
 
-
-
 #data_clean = DataCleaning()           User Cleaning Test
 #df = data_clean.get_from_aws('legacy_users')
 #data_clean.clean_user_data(df)
@@ -143,8 +141,8 @@ class DataCleaning:
 #data_clean = DataCleaning()          #Card detail clean test
 # df = data_clean.clean_card_data()
 
-data_clean = DataCleaning()    #Store data clean test
-data_clean.clean_date_data()
+#data_clean = DataCleaning()    #Store data clean test
+#data_clean.clean_date_data()
 
 
 #data_clean = DataCleaning()

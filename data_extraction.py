@@ -14,8 +14,8 @@ class DataExtractor:
         self.pdf ='https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf'
         self.key_dict = {"x-api-key":"yFBQbwXe9J3sd6zWVAMrK6lcxxr0q1lr2PT6DDMX"}
         self.store_count = self.list_number_of_stores('https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores')
-        with open('db_creds.yaml', 'r') as yaml_file:
-            self.aws_keys = yaml.safe_load(yaml_file)
+        with open('s3_keys.yaml', 'r') as yaml_file:
+            self.s3_keys = yaml.safe_load(yaml_file)
         
 
     
@@ -48,20 +48,23 @@ class DataExtractor:
         #print(df)
         return df
     
-    #def extract_from_s3(self): #PRODUCTS DATA #AWS account is not working currently, currently awaiting support email 
-        client = boto3.client('s3',aws_access_key_id= self.aws_keys['Access key ID'], aws_secret_access_key=self.aws_keys['Secret access key'])
+    def extract_from_s3(self):
+        client = boto3.client('s3',aws_access_key_id= self.s3_keys['ACCESS'], aws_secret_access_key=self.s3_keys['SECRET'])
         csv_object = client.get_object(Bucket = 'data-handling-public', Key = 'products.csv' )['Body']
         csv_object = csv_object.read().decode('utf-8')
-        df_product_details = pd.read_csv(StringIO(csv_object))
-        return df_product_details
-    
-    #def extract_from_json(self): #DATE EVENTS DATA #AWS account is not working currently, currently awaiting support email 
+        df = pd.read_csv(StringIO(csv_object))
+        print(df)
+        return df
+
+    def extract_json_data(self):
+        client = boto3.client('s3',aws_access_key_id=self.s3_keys['ACCESS'], aws_secret_access_key=self.s3_keys['SECRET'])
+        json_object = client.get_object(Bucket = 'data-handling-public', Key = 'date_details.json' )['Body']
+        json_object = json_object.read().decode('utf-8')
+        df = pd.read_json(StringIO(json_object))
+        return df
 
 
 
-
-
-    
 
 
 #dc = DatabaseConnector()   #Extract table test
@@ -76,3 +79,6 @@ class DataExtractor:
 #extractor.list_number_of_stores('https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores')
 #extractor.retrieve_stores_data()
 
+
+extractor = DataExtractor()    #PDF extraction Test
+extractor.extract_json_data()

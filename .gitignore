@@ -1,4 +1,5 @@
 db_creds.yaml
 local_creds.yaml
+s3_keys.yaml
 .vscode
 *.csv

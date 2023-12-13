@@ -22,7 +22,13 @@ class DataCleaning:
         df = self.extractor.retrieve_stores_data()
         return df
     
-  
+    def get_s3_data(self):
+        df = self.extractor.extract_from_s3()
+        return df
+    
+    def get_json_data(self):
+        df = self.extractor.extract_json_data()
+        return df
 
 
     def clean_user_data(self):
@@ -83,8 +89,51 @@ class DataCleaning:
         df = df.reset_index(drop=True)
 
         return df
-
     
+
+
+    def convert_product_weights(self):
+        df = self.get_s3_data().dropna(subset=['weight'])
+
+        df['weight'] = df['weight'].str.replace(' x ', '*').str.replace('kg', ' k').str.replace('g', ' g').str.replace('ml', ' ml').str.replace('oz', ' oz')
+        df[['Weight(kg)', 'Units']] = df['weight'].str.split(" ", n=1, expand=True)
+        df['date_added'] = pd.to_datetime(df['date_added'], infer_datetime_format=True, errors='coerce')
+        df['Weight(kg)'] = pd.to_numeric(df['Weight(kg)'], errors='coerce').round(3)
+        df['Units'] = df['Units'].str.replace('.', '').str.replace(' ', '')
+        df[['m1', 'm2']] = df['weight'].str.split("*", n=1, expand=True)
+        df['m2'] = df['m2'].str.replace('g', '')
+        for weight_in_kg in df.index:
+            if pd.notna(df.at[weight_in_kg, 'weight']) and '*' in df.at[weight_in_kg, 'weight']:
+                df.at[weight_in_kg, 'Weight(kg)'] = pd.to_numeric(df.at[weight_in_kg, 'm1'], errors='coerce') * pd.to_numeric(df.at[weight_in_kg, 'm2'], errors='coerce')
+        for weight_in_kg in df.index:
+            if pd.notna(df.at[weight_in_kg, 'Units']) and df.at[weight_in_kg, 'Units'] == 'g':
+                df.at[weight_in_kg, 'Weight(kg)'] /= 1000
+        for weight_in_kg in df.index:
+            if pd.notna(df.at[weight_in_kg, 'Units']) and df.at[weight_in_kg, 'Units'] == 'ml':
+                df.at[weight_in_kg, 'Weight(kg)'] /= 1000
+        for weight_in_kg in df.index:
+            if pd.notna(df.at[weight_in_kg, 'Units']) and df.at[weight_in_kg, 'Units'] == 'oz':
+                df.at[weight_in_kg, 'Weight(kg)'] /= 35.274
+
+
+        return df
+    
+
+    def clean_date_data(self):
+        df = self.get_json_data()
+        for row in df.index:
+            if df.loc[row, 'day'] == 'NULL':
+                df.drop(row, inplace=True)
+        df['month'] = pd.to_numeric(df['month'], errors='coerce')
+        df = df.dropna()
+        df['month'] = df['month'].astype(np.int64)
+        print("AFTER")
+        #print(df)
+        return df
+
+
+
+
 
 #data_clean = DataCleaning()           User Cleaning Test
 #df = data_clean.get_from_aws('legacy_users')
@@ -95,7 +144,7 @@ class DataCleaning:
 # df = data_clean.clean_card_data()
 
 data_clean = DataCleaning()    #Store data clean test
-data_clean.clean_store_data()
+data_clean.clean_date_data()
 
 
 #data_clean = DataCleaning()

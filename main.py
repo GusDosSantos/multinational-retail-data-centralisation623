@@ -65,6 +65,16 @@ def main():
         #print(f"An error occurred: {e}")
 
 
+    #===CARDS===
+
+    #try:
+        #print("Attempting to load CARDS to database")
+        #cleaned_orders_data = data_cleaner.clean_card_data()
+        #db_connector.upload_to_db(cleaned_orders_data,'dim_cards')
+        #print("Data transferred.")
+    #except Exception as e:
+        #print(f"An error occurred: {e}")
+
 
 
 if __name__ == "__main__":

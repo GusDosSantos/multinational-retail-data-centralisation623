@@ -42,15 +42,17 @@ This script is what instantiates all the other classes and allows for the extrac
 
 ## Usage
 
-- A basic understanding of Python would be necessary to run make use this program.
+- A basic understanding of Python would be necessary to run and use this program.
 - Install each of the files and folders within this repo and download locally into a folder of your choice.
 - Use pip/conda to install any of the libraries & modules specified within the script imports as these are necessary for the program to function.
 - Create the following yaml files:
     1. **db_creds.yaml (RDS_HOST, RDS_PASSWORD, RDS_USER, RDS_DATABASE, RDS_PORT)** - This file stores the necessary values for connection to the aws relational database.
-    2. **local_creds.yaml (LOCAL_PASSWORD, DATABASE_NAME)** - This file stores the root password and the database name to connect/upload to on your local postgres server.
-    3. **s3_keys.yaml (ACCESS, SECRET)** - This file stores the access and secret key for the IAM user to allow for a connection to the AWS S3 Bucket. Make sure that AWS is configured in the command line when attempting to extract data from the bucket. It is also important to note that the user must have S3 permissions on the account.
-- With these yaml files filled appropriately, the program can now be ran in order to extract, clean and upload the data from the various sources into your local postgres database.
+    2. **local_creds.yaml (LOCAL_PASSWORD, DATABASE_NAME)** - This file stores the root password and the database name to connect/upload to on your local Postgres server.
+    3. **s3_keys.yaml (ACCESS, SECRET)** - This file stores the access and secret key for the IAM user to allow for a connection to the AWS S3 Bucket. Ensure that AWS is configured in the command line when extracting data from the bucket. It is also important to note that the user must have S3 permissions on the account.
+- With these yaml files filled appropriately, the program can now be run to extract, clean and upload the data from the various sources into your local Postgres database.
 - The scripts can be modified to extract data from other types of sources, although this would require changes to the cleaning according to both the values within the source data as well as the end specification.
-
+- Uncomment the required data's try-block(s) within the main script and then run the folder or script from a command line.
+- The data should now be loaded onto the Postgres database as a table.
+- With the creation of an appropriate schema, this data can now be queried/analysed from PGAdmin or a tool such as SQLTools within Visual Studio
 
 
